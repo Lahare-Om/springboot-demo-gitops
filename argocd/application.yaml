@@ -7,9 +7,9 @@ spec:
   project: default
   source:
     # Update this to your repo URL and preferred branch.
-    repoURL: https://example.invalid/your-repo.git
+    repoURL: https://github.com/Lahare-Om/springboot-demo-gitops
     targetRevision: main
-    path: springboot-demo-app/k8s
+    path: k8s
   destination:
     server: https://kubernetes.default.svc
     namespace: default
