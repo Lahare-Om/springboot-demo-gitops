@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/name: springboot-demo-app
 spec:
   replicas: 5
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: springboot-demo-app
