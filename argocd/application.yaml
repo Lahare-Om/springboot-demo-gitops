@@ -12,11 +12,11 @@ spec:
     path: k8s
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: springboot-demo
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=false
+      - CreateNamespace=true
 
