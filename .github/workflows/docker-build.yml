@@ -26,8 +26,8 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Build Application
-        run: mvn clean package
+      - name: Build and Test Application
+        run: mvn clean verify
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
