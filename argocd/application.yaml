@@ -8,7 +8,7 @@ spec:
   source:
     # Update this to your repo URL and preferred branch.
     repoURL: https://github.com/Lahare-Om/springboot-demo-gitops
-    targetRevision: main
+    targetRevision: deploy
     path: k8s
   destination:
     server: https://kubernetes.default.svc
