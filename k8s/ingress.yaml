@@ -2,6 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: springboot-demo-app
+  namespace: springboot-demo
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   rules:
@@ -15,3 +18,10 @@ spec:
                 name: springboot-demo-app
                 port:
                   number: 8080
+          - path: /api/python(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: python-demo-app
+                port:
+                  number: 8000
