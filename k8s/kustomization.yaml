@@ -3,12 +3,8 @@ kind: Kustomization
 
 namespace: springboot-demo
 
-
 resources:
   - base/configmap.yaml
   - base/deployment.yaml
   - base/service.yaml
-  - python-app/configmap.yaml
-  - python-app/deployment.yaml
-  - python-app/service.yaml
   - ingress.yaml
