@@ -6,7 +6,6 @@ metadata:
 spec:
   project: default
   source:
-    # Update this to your repo URL and preferred branch.
     repoURL: https://github.com/Lahare-Om/springboot-demo-gitops
     targetRevision: deploy
     path: apps/k8s
