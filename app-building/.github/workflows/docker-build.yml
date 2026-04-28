@@ -1,4 +1,4 @@
-name: Build Docker Image
+name: Build Spring Boot Demo Image
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -17,19 +17,27 @@ jobs:
       DEPLOY_BRANCH: deploy
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout automation repository
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
+
+      - name: Checkout apps repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.APPS_REPOSITORY }}
+          token: ${{ secrets.CROSS_REPO_TOKEN }}
+          path: apps
           persist-credentials: true
           fetch-depth: 0
 
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '21'
+          distribution: "temurin"
+          java-version: "21"
 
-      - name: Build and Test Application
+      - name: Build and test application
         working-directory: apps
         run: mvn clean verify
 
@@ -39,13 +47,14 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker Image
+      - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/springboot-demo-app:${{ github.sha }} ./apps
 
-      - name: Push Docker Image
+      - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/springboot-demo-app:${{ github.sha }}
 
       - name: Prepare deployment worktree
+        working-directory: apps
         run: |
           set -euo pipefail
           DEPLOY_DIR="$(mktemp -d)"
@@ -70,12 +79,12 @@ jobs:
       - name: Update Kubernetes manifest image
         working-directory: ${{ env.DEPLOY_DIR }}
         run: |
-          sed -i "s|image: .*|image: ${{ secrets.DOCKER_USERNAME }}/springboot-demo-app:${{ github.sha }}|" apps/k8s/base/deployment.yaml
+          sed -i "s|image: .*|image: ${{ secrets.DOCKER_USERNAME }}/springboot-demo-app:${{ github.sha }}|" k8s/base/deployment.yaml
 
       - name: Commit updated manifest
         working-directory: ${{ env.DEPLOY_DIR }}
         run: |
-          git add apps/k8s/base/deployment.yaml
+          git add k8s/base/deployment.yaml
           git diff --cached --quiet || git commit -m "Update deployment image to ${{ github.sha }}"
 
       - name: Push updated manifest
@@ -84,6 +93,7 @@ jobs:
 
       - name: Cleanup deployment worktree
         if: always()
+        working-directory: apps
         run: |
           if [ -n "${DEPLOY_DIR:-}" ]; then
             git worktree remove --force "$DEPLOY_DIR" || true

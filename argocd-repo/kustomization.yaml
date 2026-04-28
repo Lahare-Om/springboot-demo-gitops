@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+#- ./application-controller
+- ./application-controller-deployment
+- ./repo-server
+- ./server
+- ./redis
+- application.yaml
+- python-app.yaml
+- node-api.yaml
+- go-api.yaml
+- rust-api.yaml
+- dotnet-api.yaml
+- php-app.yaml
+- ruby-app.yaml
+- kotlin-app.yaml
+- elixir-app.yaml

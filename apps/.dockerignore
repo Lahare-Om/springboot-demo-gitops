@@ -1,9 +1,8 @@
 target/
-apps/target/
 frontend/node_modules/
 frontend/dist/
-apps/frontend/node_modules/
-apps/frontend/dist/
 **/.pytest_cache/
 **/__pycache__/
 **/*.pyc
+.git/
+.github/

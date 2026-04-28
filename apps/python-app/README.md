@@ -120,11 +120,11 @@ Can be deployed alongside the Spring Boot app using docker-compose.
 
 ### Kubernetes
 
-Use the K8s configurations in the `k8s/` directory at the root of the repository.
+Use the K8s configurations in the `k8s/` directory at the root of the apps repository.
 
 ### ArgoCD
 
-Deployed via ArgoCD configurations in the `argocd/` directory.
+Deployed via the sibling `argocd-repo`, which should point Argo CD at `k8s/python-app`.
 
 ## Environment Variables
 
